@@ -11,6 +11,7 @@ print('args: ', ' '.join(sys.argv[1:]))
 
 
 SCRIPTNAME = os.path.splitext(__file__)[0]
+SCRIPTPATH = os.path.dirname(os.path.abspath(__file__))
 
 from ruamel import yaml
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
@@ -23,7 +24,7 @@ if __name__ == '__main__':
     parser.add_argument(
         '--config',
         metavar='FILEPATH',
-        default='%(SCRIPTNAME)s.yml' % globals(),
+        default='%(SCRIPTPATH)s/config.yml' % globals(),
         help='default="%(default)s"; config filepath')
     ns, rem = parser.parse_known_args()
     try:
@@ -35,12 +36,12 @@ if __name__ == '__main__':
     parser.set_defaults(**config)
     parser.add_argument(
         '--firstname',
-        help='first name')
+        help='default="%(default)s"; first name')
     parser.add_argument(
         '--lastname',
-        help='last name')
+        help='default="%(default)s"; last name')
     parser.add_argument(
         '--age',
-        help='age')
+        help='default="%(default)s"; age')
     ns = parser.parse_args(rem)
     print(ns)
