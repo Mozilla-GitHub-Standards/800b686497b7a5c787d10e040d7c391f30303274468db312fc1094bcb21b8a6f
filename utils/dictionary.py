@@ -39,7 +39,7 @@ def isfloat(obj):
     return isinstance(obj, float)
 
 def isscalar(obj):
-    return (obj == None) or isstr(obj) or isint(obj) or isfloat(obj)
+    return (obj is None) or isstr(obj) or isint(obj) or isfloat(obj)
 
 def _merge(obj1, obj2):
     """merges obj2 into obj1 and return merged result
