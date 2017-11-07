@@ -1,20 +1,21 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+'''
+    autodomain
+'''
 
 import os
-import re
 import sys
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
+from ruamel import yaml
+
 sys.dont_write_bytecode = True
 
 print('name: ', __file__)
 print('args: ', ' '.join(sys.argv[1:]))
 
-
 SCRIPTNAME = os.path.splitext(__file__)[0]
 SCRIPTPATH = os.path.dirname(os.path.abspath(__file__))
-
-from ruamel import yaml
-from argparse import ArgumentParser, RawDescriptionHelpFormatter
 
 if __name__ == '__main__':
     parser = ArgumentParser(

@@ -1,19 +1,19 @@
-
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+'''
+    dodo.py
+'''
 
 import os
 import pwd
 
-from doit import get_var
-from ruamel import yaml
-
-from utils.format import fmt, pfmt
+from utils.format import fmt
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 UID = os.getuid()
 GID = pwd.getpwuid(UID).pw_gid
 USER = pwd.getpwuid(UID).pw_name
-ENV=dict(AC_UID=UID, AC_GID=GID, AC_USER=USER)
+ENV = dict(AC_UID=UID, AC_GID=GID, AC_USER=USER)
 
 LOG_LEVELS = [
     'DEBUG',
@@ -33,16 +33,32 @@ ENVS = ' '.join([
 ])
 
 class UnknownPkgmgrError(Exception):
+    '''
+    UnknownPkgmgrError
+    '''
     def __init__(self):
+        '''
+        __init__
+        '''
         super(UnknownPkgmgrError, self).__init__('unknown pkgmgr!')
 
 def check_hash(program):
+    '''
+    check_hash
+    '''
     from subprocess import check_call, CalledProcessError, PIPE
     try:
         check_call(fmt('hash {program}'), shell=True, stdout=PIPE, stderr=PIPE)
         return True
     except CalledProcessError:
         return False
+
+def find_pyfiles(pattern='**/*.py', recursive=True):
+    '''
+    find_pyfiles
+    '''
+    from glob import glob
+    return glob(pattern, recursive=recursive)
 
 def task_count():
     '''
@@ -89,6 +105,18 @@ def task_pull():
             fmt('if {test}; then {pull}; else {dirty}; exit 1; fi'),
         ],
     }
+
+def task_lint():
+    '''
+    run pylint
+    '''
+    for pyfile in find_pyfiles():
+        yield {
+            'name': pyfile,
+            'actions': [
+                fmt('pylint --rcfile .rcfile {pyfile}'),
+            ],
+        }
 
 def task_test():
     '''
@@ -140,7 +168,7 @@ def task_tidy():
     return {
         'actions': [
             'rm -rf ' + ' '.join(TIDY_FILES),
-            'find . | grep -E "(__pycache__|\.pyc$)" | xargs rm -rf',
+            'find . | grep -E "(__pycache__|\.pyc$)" | xargs rm -rf', #pylint: disable=anomalous-backslash-in-string
         ],
     }
 
