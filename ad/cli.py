@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 '''
-    autodomain
+autodomain
 '''
 
 import os
@@ -12,14 +12,11 @@ from ruamel import yaml
 from utils.format import fmt
 
 sys.dont_write_bytecode = True
+FILE = os.path.realpath(__file__)
+SCRIPTNAME = os.path.splitext(FILE)[0]
+SCRIPTPATH = os.path.dirname(os.path.abspath(FILE))
 
-print('name: ', __file__)
-print('args: ', ' '.join(sys.argv[1:]))
-
-SCRIPTNAME = os.path.splitext(__file__)[0]
-SCRIPTPATH = os.path.dirname(os.path.abspath(__file__))
-
-if __name__ == '__main__':
+def main(args):
     parser = ArgumentParser(
         description=__doc__,
         formatter_class=RawDescriptionHelpFormatter,
@@ -29,7 +26,7 @@ if __name__ == '__main__':
         metavar='FILEPATH',
         default='%(SCRIPTPATH)s/config.yml' % globals(),
         help='default="%(default)s"; config filepath')
-    ns, rem = parser.parse_known_args()
+    ns, rem = parser.parse_known_args(args)
     try:
         config = yaml.safe_load(open(ns.config))
     except FileNotFoundError as er:
@@ -48,3 +45,7 @@ if __name__ == '__main__':
         help='default="%(default)s"; age')
     ns = parser.parse_args(rem)
     print(ns)
+    return 0
+
+if __name__ == '__main__':
+    sys.exit(main(sys.argv))

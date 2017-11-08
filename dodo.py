@@ -122,23 +122,10 @@ def task_pytest():
     '''
     run pytest
     '''
-    for pyfile in find_pyfiles():
-        yield {
-            'name': pyfile,
-            'actions': [
-            ],
-        }
-
-def task_test():
-    '''
-    setup venv and run pytest
-    '''
     return {
-        'task_dep': [
-            'noroot',
-        ],
+        'task_dep': ['noroot'],
         'actions': [
-            'echo "test"',
+            'cd ad/ && python3 -m pytest tests/',
         ],
     }
 
@@ -160,7 +147,8 @@ def task_deploy():
         'task_dep': [
             'noroot',
             'version',
-            'test',
+            'pylint',
+            'pytest',
         ],
         'actions': [
             'echo "deploy"',
