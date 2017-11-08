@@ -7,7 +7,7 @@
 import os
 import pwd
 
-from utils.format import fmt
+from ad.utils.format import fmt
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 UID = os.getuid()
@@ -106,7 +106,7 @@ def task_pull():
         ],
     }
 
-def task_lint():
+def task_pylint():
     '''
     run pylint
     '''
@@ -115,6 +115,17 @@ def task_lint():
             'name': pyfile,
             'actions': [
                 fmt('pylint --rcfile .rcfile {pyfile}'),
+            ],
+        }
+
+def task_pytest():
+    '''
+    run pytest
+    '''
+    for pyfile in find_pyfiles():
+        yield {
+            'name': pyfile,
+            'actions': [
             ],
         }
 

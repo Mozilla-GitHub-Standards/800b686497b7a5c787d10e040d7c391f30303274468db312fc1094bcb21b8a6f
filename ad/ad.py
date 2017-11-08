@@ -9,6 +9,8 @@ import sys
 from argparse import ArgumentParser, RawDescriptionHelpFormatter
 from ruamel import yaml
 
+from utils.format import fmt
+
 sys.dont_write_bytecode = True
 
 print('name: ', __file__)
